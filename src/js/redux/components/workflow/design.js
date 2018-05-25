@@ -24,11 +24,7 @@ const param = {
                          }
                  }
              }
-
-
-
 const data = [];
-
 
 class TopHeader extends React.Component {
     render() {
@@ -42,7 +38,6 @@ class TopHeader extends React.Component {
         )
     }
 }
-
 class SerchModer extends React.Component{
     render(){
             return(
@@ -55,7 +50,25 @@ class SerchModer extends React.Component{
                 )
 
     }
+}
 
+class ModalBox extends React.Component{
+     constructor(props){
+          super(props);
+          this.state={
+             visible: false
+          };
+        }
+
+      render(){
+        return(
+          <Modal title="BasicModal" visible={this.state.visible} onOk={this.handleOk} onCancel={this.handleCancel}>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          </Modal>
+          )
+      }
 }
 class Page extends React.Component{
     constructor(props){
@@ -67,15 +80,16 @@ class Page extends React.Component{
                <ButtonGroup>
                 <Button type="primary" ghost><Icon type="left" />上一页</Button>
                  <Button type="primary" ghost>下一页<Icon type="right" /></Button>
+                 <br/>
               </ButtonGroup>
             </div>
         )
     }
-
 }
 class Tables extends React.Component{
     constructor(props){
           super(props);
+          this.state={ };
           this.columns = [
             {  title: '昵称', width: 80, dataIndex: 'wx_nickname', key: 'wx_nickname', fixed: 'left' },
             {  title: '头像', 
@@ -83,7 +97,7 @@ class Tables extends React.Component{
            dataIndex: 'wx_logo',
                fixed: 'left' ,
                width: 50, 
-              render: (text) =>(<Avatar  src={text} />) 
+              render: (text) =>(<Avatar  src={text}  className="ant-dropdown-link"/>) 
             },
             { title: '公司名称', dataIndex: 'company_name', key: '1' ,width: 200},
             { title: '用户状态', dataIndex: 'delete_flag', key: '2', width: 80 },
@@ -98,19 +112,34 @@ class Tables extends React.Component{
                 key: 'operation',
               fixed: 'right',
               width: 250,
-               render: (text, record) => (
+               render: (text,record) => {
+                    return(
                            <span>
-                              <a href="#">欠费记录</a>
+                              <a href="#" onClick={(text,record) => this.arrea(text,record)} >欠费记录</a>
                               <span className="ant-divider" />
-                              <a href="#">充值记录</a>
+                              <a href="#" onClick={(text,record) => this.chage(text,record)} >充值记录</a>
                               <span className="ant-divider" />
-                              <a href="#" className="ant-dropdown-link">消费记录 </a>
-                          </span>
-                                      ),
-            }
-                         ];
-          this.state={ };
+                              <a href="#" onClick={(text,record) => this.consu(text,record)} className="ant">消费记录 </a>
 
+                          </span>
+                          )
+                     },
+            }
+
+                         ];
+    }
+      arrea(a,b){
+           console.log(a);
+           console.log(b);
+      
+    }
+      chage(a,b){
+           console.log(a);
+           console.log(b);
+    }
+      consu(a,b){
+           console.log(a);
+           console.log(b);
     }
     componentDidMount(){
        $.ajax({    
@@ -141,14 +170,12 @@ class Tables extends React.Component{
                                    }
             }); 
         }
-
-
     render(){
-            return(
-                  <div class="tableCss">
-               <Table className="tablestyle"  pagination={false} columns={this.columns} dataSource={data} scroll={{ x: 1800, y: 500 }} />
-                    <Page/>
-                  </div>
+        return(
+          <div class="tableCss">
+               <Table pagination={false} columns={this.columns} dataSource={data} scroll={{ x: 1800, y: 500 }}  className="tablestyle"  />
+               <Page/>
+          </div>
              )
     }
 }
@@ -158,7 +185,7 @@ class Workflow extends React.Component {
         return (
               <div class="menberBox"> 
                <Tables/>
-
+               <ModalBox/>
               </div>      
         )
     }
@@ -172,12 +199,10 @@ export default class Workflowpage extends React.Component {
                 <TopHeader />
                 <Layout style={{ padding: '24px 0', background: '#fff' }}>
                     <Sider width={200} style={{ background: '#fff' }}>
-                        <Nav />
-                </Sider> 
-                   <Workflow />
+                         <Nav />
+                    </Sider> 
+                    <Workflow />
                 </Layout>
-
-                 
             </div>
             )
 
